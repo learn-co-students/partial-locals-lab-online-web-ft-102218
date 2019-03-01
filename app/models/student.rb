@@ -13,4 +13,14 @@
 class Student < ActiveRecord::Base
   has_many :classroom_students
   has_many :classrooms, through: :classroom_students
+
+  def self.search(search)
+    students = Array.new #inialize array
+    if search.empty?
+      students = Student.all
+    else
+      students = Student.where("LOWER(name) like ?", "%#{search.downcase}%")
+    end
+    students
+  end
 end
